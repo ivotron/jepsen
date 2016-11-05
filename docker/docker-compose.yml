@@ -37,3 +37,19 @@ services:
     extends: node
     container_name: jepsen-n5
     hostname: n5
+  ceph-deploy:
+    image: ivotron/ceph-deploy
+    container_name: ceph-deploy
+    command: -c 'chown root:root /root/.ssh/config && ceph-deploy new n1 n2 n3 n4 n5 && ceph-deploy --overwrite-conf mon create'
+    working_dir: /tmp
+    entrypoint: /bin/bash
+    depends_on:
+    - control
+    volumes:
+    - ./secret:/root/.ssh/
+    links:
+    - n1
+    - n2
+    - n3
+    - n4
+    - n5
