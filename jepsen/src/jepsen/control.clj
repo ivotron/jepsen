@@ -234,10 +234,8 @@
   "Opens a raw session to the given host."
   [host]
   (let [host  (name host)
-        agent (ssh/ssh-agent {})
-        _     (when *private-key-path*
-                (ssh/add-identity agent
-                                  {:private-key-path *private-key-path*}))]
+        agent (ssh/ssh-agent {})]
+    (ssh/add-identity agent {:private-key-path "/root/.ssh/id_rsa"})
     (doto (ssh/session agent
                        host
                        {:username *username*
